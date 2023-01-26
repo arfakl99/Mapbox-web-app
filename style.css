@@ -89,12 +89,14 @@ h1{
     }
     .navbar{
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
     }
     .container-fluid{
         width: auto;
+        
     }
     .container-fluid{
-        margin-right: 150px;
+        margin-right: 450px;
+        justify-content: space-between;
     }

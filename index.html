@@ -205,8 +205,9 @@
         // style: "mapbox://styles/mapbox/light-v11", // style URL
         style: "mapbox://styles/mapbox/dark-v11", // style URL
 
-        zoom: 9, // starting zoom
-        center: [-111.87416207879207, 40.74613427130487], // // starting center in [lng, lat]
+        zoom: 10, // starting zoom
+        center: [-111.90664426866424,
+          40.58982956108184], // // starting center in [lng, lat]
       });
 
       map.on("style.load", () => {
@@ -514,7 +515,7 @@
           };
         }
         const popup = new mapboxgl.Popup({ closeOnClick: false })
-          .setLngLat([-111.87416207879207, 40.74613427130487])
+          .setLngLat([ -111.90664426866424,40.58982956108184])
           .setHTML("<strong>Click to see more info!</strong>")
           .addTo(map);
 
@@ -592,7 +593,7 @@
               alert("Click the map to draw a polygon.");
           }
         }
-        // map.addControl(new mapboxgl.NavigationControl());
+        
       });
     </script>
   </body>

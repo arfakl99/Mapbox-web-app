@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Load data from an external GeoJSON file</title>
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <!-- <h1>Parcels Data</h1> -->
+      <div class="m-2 navigation">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div class="container-fluid">
+            <a href="#" class="navbar-brand">Webapp</a>
+            <button
+              type="button"
+              class="navbar-toggler"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarCollapse1"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse1">
+              <div class="navbar-nav">
+                <a href="#" class="nav-item nav-link active">Home</a>
+                <a href="#" class="nav-item nav-link">About</a>
+                <a href="#" class="nav-item nav-link">Contact</a>
+              </div>
+              <form class="d-flex ms-auto">
+                <input
+                  type="text"
+                  class="form-control me-sm-2"
+                  placeholder="Search"
+                />
+                <button type="submit" class="btn btn-outline-light">
+                  Search
+                </button>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <div class="container2">
+        <div id="map"></div>
+
+        <div id="menu">
+          <input
+            id="satellite-streets-v12"
+            type="radio"
+            name="rtoggle"
+            value="satellite"
+            checked="checked"
+          />
+          <!-- See a list of Mapbox-hosted public styles at -->
+          <!-- https://docs.mapbox.com/api/maps/styles/#mapbox-styles -->
+          <label for="satellite-streets-v12">Dark</label>
+          <input id="light-v11" type="radio" name="rtoggle" value="light" />
+          <label for="light-v11">light</label>
+          <input id="dark-v11" type="radio" name="rtoggle" value="dark" />
+          <label for="dark-v11">satellite streets</label>
+          <input id="streets-v12" type="radio" name="rtoggle" value="streets" />
+          <label for="streets-v12">streets</label>
+          <input
+            id="outdoors-v12"
+            type="radio"
+            name="rtoggle"
+            value="outdoors"
+          />
+          <label for="outdoors-v12">outdoors</label>
+        </div>
+
+        <div class="content">
+          <h1>Parcel Info</h1>
+          <p class="lorem45">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores
+            autem ab aspernatur similique praesentium! Quasi libero aperiam at
+            eius, molestiae numquam. Voluptatem repellendus similique laudantium
+            sequi architecto nobis nulla esse odit inventore, eaque laboriosam
+            exercitationem porro deserunt maiores minus magni voluptas sunt
+            ducimus id a?
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="main"> -->
+    <!-- <h1>Parcels Data</h1> -->
+    <!-- <div class="m-4 navigation">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div class="container-fluid">
+            <a href="#" class="navbar-brand">Webapp</a>
+            <button
+              type="button"
+              class="navbar-toggler"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarCollapse1"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button> -->
+    <!-- <div class="collapse navbar-collapse" id="navbarCollapse1">
+              <div class="navbar-nav">
+                <a href="#" class="nav-item nav-link active">Home</a>
+                <a href="#" class="nav-item nav-link">About</a>
+                <a href="#" class="nav-item nav-link">Contact</a>
+              </div>
+              <form class="d-flex ms-auto">
+                <input
+                  type="text"
+                  class="form-control me-sm-2"
+                  placeholder="Search"
+                />
+                <button type="submit" class="btn btn-outline-light">
+                  Search
+                </button>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </div> -->
+
+    <!-- <div id="map"></div>
+      <div class="content">
+        <h1>Parcel Info</h1>
+        <p class="lorem45">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores autem
+          ab aspernatur similique praesentium! Quasi libero aperiam at eius,
+          molestiae numquam. Voluptatem repellendus similique laudantium sequi
+          architecto nobis nulla esse odit inventore, eaque laboriosam
+          exercitationem porro deserunt maiores minus magni voluptas sunt
+          ducimus id a?
+        </p>
+      </div>
+    </div> -->
+
+    <!-- <div id="menu">
+      <input
+        id="satellite-streets-v12"
+        type="radio"
+        name="rtoggle"
+        value="satellite"
+        checked="checked"
+      /> -->
+    <!-- See a list of Mapbox-hosted public styles at -->
+    <!-- https://docs.mapbox.com/api/maps/styles/#mapbox-styles -->
+    <!-- <label for="satellite-streets-v12">Dark</label>
+      <input id="light-v11" type="radio" name="rtoggle" value="light" />
+      <label for="light-v11">light</label>
+      <input id="dark-v11" type="radio" name="rtoggle" value="dark" />
+      <label for="dark-v11">satellite streets</label>
+      <input id="streets-v12" type="radio" name="rtoggle" value="streets" />
+      <label for="streets-v12">streets</label>
+      <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors" />
+      <label for="outdoors-v12">outdoors</label>
+    </div> -->
+
+    <script>
+      mapboxgl.accessToken =
+        "pk.eyJ1IjoiYXJmYWtsIiwiYSI6ImNsYnQzd284eDA5OGUzcHBmc2VjOTJ4dzEifQ.RFRiN_WHNN8c4zO7nt2XLA";
+      const map = new mapboxgl.Map({
+        container: "map", // container ID
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        // style: "mapbox://styles/mapbox/light-v11", // style URL
+        style: "mapbox://styles/mapbox/dark-v11", // style URL
+
+        zoom: 14, // starting zoom
+        center: [-111.87416207879207, 40.74613427130487], // // starting center in [lng, lat]
+      });
+
+      map.on("style.load", () => {
+        map.setFog({}); // Set the default atmosphere style
+      });
+
+      map.on("load", () => {
+        map.addSource("main", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp15.geojson",
+        });
+
+        map.addLayer(
+          {
+            id: "main",
+            type: "fill",
+            source: "main", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "#0080ff", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+
+        map.addSource("second", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp14.geojson",
+        });
+
+        map.addLayer(
+          {
+            id: "second",
+            type: "fill",
+            source: "second", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "red", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+
+        map.addSource("grp13", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp13.geojson",
+        });
+
+        map.addLayer(
+          {
+            id: "grp13",
+            type: "fill",
+            source: "grp13", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "yellow", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+
+        map.addSource("grp12", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp12.geojson",
+        });
+
+        map.addLayer(
+          {
+            id: "grp12",
+            type: "fill",
+            source: "grp12", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "#00cc00", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+        map.addSource("grp11", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp11.geojson",
+        });
+
+        map.addLayer(
+          {
+            id: "grp11",
+            type: "fill",
+            source: "grp11", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "#993300", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+        map.addSource("grp10", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp10.geojson",
+        });
+
+        map.addLayer(
+          {
+            id: "grp10",
+            type: "fill",
+            source: "grp10", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "#660066", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+        map.addSource("grp9", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp9.geojson",
+        });
+
+        map.addLayer(
+          {
+            id: "grp9",
+            type: "fill",
+            source: "grp9", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "#666633", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+        map.addSource("grp8", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp8.geojson",
+        });
+
+        map.addLayer({
+          id: "grp8",
+          type: "fill",
+          source: "grp8", // reference the data source
+          layout: {},
+          paint: {
+            "fill-color": "#660066", // blue color fill
+            "fill-opacity": 0.5,
+          },
+        });
+        map.addSource(
+          "grp7",
+          {
+            type: "geojson",
+            // Use a URL for the value for the `data` property.
+            data: "Data/grp7.geojson",
+          },
+          "road-label-simple"
+        );
+
+        map.addLayer(
+          {
+            id: "grp7",
+            type: "fill",
+            source: "grp7", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "#660033", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+        map.addSource("grp6", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp6.geojson",
+        });
+
+        map.addLayer(
+          {
+            id: "grp6",
+            type: "fill",
+            source: "grp6", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "#666633", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+        map.addSource("grp5", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp5.geojson",
+        });
+
+        map.addLayer(
+          {
+            id: "grp5",
+            type: "fill",
+            source: "grp5", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "#000099", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+        map.addSource("grp4", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp4.geojson",
+        });
+
+        map.addLayer(
+          {
+            id: "grp4",
+            type: "fill",
+            source: "grp4", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "#996633", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+        map.addSource("grp3", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp3.geojson",
+        });
+
+        map.addLayer(
+          {
+            id: "grp3",
+            type: "fill",
+            source: "grp3", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "#666633", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+        map.addSource("grp2", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp2.geojson",
+        });
+
+        map.addLayer(
+          {
+            id: "grp2",
+            type: "fill",
+            source: "grp2", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "#669900", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+        map.addSource("grp1", {
+          type: "geojson",
+          // Use a URL for the value for the `data` property.
+          data: "Data/grp1.geojson",
+        });
+
+        map.addLayer(
+          {
+            id: "grp1",
+            type: "fill",
+            source: "grp1", // reference the data source
+            layout: {},
+            paint: {
+              "fill-color": "#ff3300", // blue color fill
+              "fill-opacity": 0.5,
+            },
+          },
+          "road-label-simple"
+        );
+        const layerList = document.getElementById("menu");
+        const inputs = layerList.getElementsByTagName("input");
+
+        for (const input of inputs) {
+          input.onclick = (layer) => {
+            const layerId = layer.target.id;
+            map.setStyle("mapbox://styles/mapbox/" + layerId);
+          };
+        }
+        const popup = new mapboxgl.Popup({ closeOnClick: false })
+          .setLngLat([-111.87416207879207, 40.74613427130487])
+          .setHTML("<strong>Click to see more info!</strong>")
+          .addTo(map);
+
+        // map.on("click", (e) => {
+        //   console.log("clicked", e.point);
+        // });
+
+        map.on("click", "main", (e) => {
+          new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(e.features[0].properties.year_built)
+            .addTo(map);
+        });
+      });
+    </script>
+  </body>
+</html>

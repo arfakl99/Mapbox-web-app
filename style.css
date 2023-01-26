@@ -3,7 +3,7 @@ body {
     padding: 0;
   }
   #map {
-    margin-top: 80px;
+    margin-top: 75px;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -95,6 +95,6 @@ h1{
     .container-fluid{
         width: auto;
     }
-    ..container-fluid{
+    .container-fluid{
         margin-right: 150px;
     }

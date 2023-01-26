@@ -87,3 +87,14 @@ h1{
     margin: 0;
     font-size: 13px;
     }
+    .navbar{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container-fluid{
+        width: auto;
+    }
+    ..container-fluid{
+        margin-right: 150px;
+    }

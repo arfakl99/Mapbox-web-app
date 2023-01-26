@@ -20,8 +20,18 @@
 
     <link rel="stylesheet" href="style.css" />
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.css"
+      type="text/css"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <div class="main">
@@ -29,14 +39,14 @@
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Webapp</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-         
-          <div class=" collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ms-auto ">
+          
+
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link mx-2 active" aria-current="page" href="#">Home</a>
+                <a class="nav-link mx-2 active" aria-current="page" href="#"
+                  >Home</a
+                >
               </li>
               <li class="nav-item">
                 <a class="nav-link mx-2" href="#">About</a>
@@ -45,10 +55,20 @@
                 <a class="nav-link mx-2" href="#">Contact</a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a
+                  class="nav-link mx-2 dropdown-toggle"
+                  href="#"
+                  id="navbarDropdownMenuLink"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
                   Company
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <ul
+                  class="dropdown-menu"
+                  aria-labelledby="navbarDropdownMenuLink"
+                >
                   <li><a class="dropdown-item" href="#">Blog</a></li>
                   <li><a class="dropdown-item" href="#">Services</a></li>
                   <li><a class="dropdown-item" href="#">Contact us</a></li>
@@ -57,9 +77,14 @@
             </ul>
           </div>
         </div>
-        </nav>
+      </nav>
+
       <div class="container2">
         <div id="map"></div>
+        <div class="calculation-box">
+          <p>Click the map to draw a polygon.</p>
+          <div id="calculated-area"></div>
+        </div>
 
         <div id="menu">
           <input
@@ -180,7 +205,7 @@
         // style: "mapbox://styles/mapbox/light-v11", // style URL
         style: "mapbox://styles/mapbox/dark-v11", // style URL
 
-        zoom: 14, // starting zoom
+        zoom: 9, // starting zoom
         center: [-111.87416207879207, 40.74613427130487], // // starting center in [lng, lat]
       });
 
@@ -497,21 +522,75 @@
         //   console.log("clicked", e.point);
         // });
 
-        map.on("click", ['main','second','grp13','grp12','grp11','grp10','grp9','grp8','grp7','grp6','grp5','grp4','grp3','grp2','grp1'], (e) => {
-          new mapboxgl.Popup()
-            .setLngLat(e.lngLat)
-            .setHTML(
-              `<div>
+        map.on(
+          "click",
+          [
+            "main",
+            "second",
+            "grp13",
+            "grp12",
+            "grp11",
+            "grp10",
+            "grp9",
+            "grp8",
+            "grp7",
+            "grp6",
+            "grp5",
+            "grp4",
+            "grp3",
+            "grp2",
+            "grp1",
+          ],
+          (e) => {
+            new mapboxgl.Popup()
+              .setLngLat(e.lngLat)
+              .setHTML(
+                `<div>
                 <strong>Parcel Info</strong>
                 <p>Parcel ID: ${e.features[0].properties.parcel_id}</p>
                 <p>Owner Name: ${e.features[0].properties.own_name}</p>
                 <p>Year built: ${e.features[0].properties.year_built}</p>
                 <p>City: ${e.features[0].properties.own_cityst}</p>
                 
-              </div>`)
-            .addTo(map);
+              </div>`
+
+              
+              )
+              .addTo(map);
+          }
+        );
+
+        const draw = new MapboxDraw({
+          // displayControlsDefault: false,
+          // Select which mapbox-gl-draw control buttons to add to the map.
+          controls: {
+            polygon: true,
+            trash: true,
+          },
+          // Set mapbox-gl-draw to draw by default.
+          // The user does not have to click the polygon control button first.
+          // defaultMode: "draw_polygon",
         });
-      
+        map.addControl(draw);
+
+        map.on("draw.create", updateArea);
+        map.on("draw.delete", updateArea);
+        map.on("draw.update", updateArea);
+
+        function updateArea(e) {
+          const data = draw.getAll();
+          const answer = document.getElementById("calculated-area");
+          if (data.features.length > 0) {
+            const area = turf.area(data);
+            // Restrict the area to 2 decimal points.
+            const rounded_area = Math.round(area * 100) / 100;
+            answer.innerHTML = `<p><strong>${rounded_area}</strong></p><p>square meters</p>`;
+          } else {
+            answer.innerHTML = "";
+            if (e.type !== "draw.delete")
+              alert("Click the map to draw a polygon.");
+          }
+        }
       });
     </script>
   </body>

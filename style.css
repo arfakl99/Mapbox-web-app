@@ -3,7 +3,7 @@ body {
     padding: 0;
   }
   #map {
-    margin-top: 90px;
+    margin-top: 80px;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -71,3 +71,19 @@ h1{
     margin-left: 1000px;
     padding: 15px;
 }
+.calculation-box {
+    height: 75px;
+    width: 150px;
+    position: absolute;
+    bottom: 40px;
+    left: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    text-align: center;
+    }
+     
+    p {
+    font-family: 'Open Sans';
+    margin: 0;
+    font-size: 13px;
+    }

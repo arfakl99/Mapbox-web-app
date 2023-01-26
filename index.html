@@ -20,43 +20,44 @@
 
     <link rel="stylesheet" href="style.css" />
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
   </head>
   <body>
     <div class="main">
       <!-- <h1>Parcels Data</h1> -->
-      <div class="m-2 navigation">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div class="container-fluid">
-            <a href="#" class="navbar-brand">Webapp</a>
-            <button
-              type="button"
-              class="navbar-toggler"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse1"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse1">
-              <div class="navbar-nav">
-                <a href="#" class="nav-item nav-link active">Home</a>
-                <a href="#" class="nav-item nav-link">About</a>
-                <a href="#" class="nav-item nav-link">Contact</a>
-              </div>
-              <form class="d-flex ms-auto">
-                <input
-                  type="text"
-                  class="form-control me-sm-2"
-                  placeholder="Search"
-                />
-                <button type="submit" class="btn btn-outline-light">
-                  Search
-                </button>
-              </form>
-            </div>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Webapp</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+         
+          <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto ">
+              <li class="nav-item">
+                <a class="nav-link mx-2 active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link mx-2" href="#">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link mx-2" href="#">Contact</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Company
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="#">Blog</a></li>
+                  <li><a class="dropdown-item" href="#">Services</a></li>
+                  <li><a class="dropdown-item" href="#">Contact us</a></li>
+                </ul>
+              </li>
+            </ul>
           </div>
+        </div>
         </nav>
-      </div>
-
       <div class="container2">
         <div id="map"></div>
 
@@ -477,6 +478,7 @@
           },
           "road-label-simple"
         );
+
         const layerList = document.getElementById("menu");
         const inputs = layerList.getElementsByTagName("input");
 
@@ -495,12 +497,21 @@
         //   console.log("clicked", e.point);
         // });
 
-        map.on("click", "main", (e) => {
+        map.on("click", ['main','second','grp13','grp12','grp11','grp10','grp9','grp8','grp7','grp6','grp5','grp4','grp3','grp2','grp1'], (e) => {
           new mapboxgl.Popup()
             .setLngLat(e.lngLat)
-            .setHTML(e.features[0].properties.year_built)
+            .setHTML(
+              `<div>
+                <strong>Parcel Info</strong>
+                <p>Parcel ID: ${e.features[0].properties.parcel_id}</p>
+                <p>Owner Name: ${e.features[0].properties.own_name}</p>
+                <p>Year built: ${e.features[0].properties.year_built}</p>
+                <p>City: ${e.features[0].properties.own_cityst}</p>
+                
+              </div>`)
             .addTo(map);
         });
+      
       });
     </script>
   </body>
